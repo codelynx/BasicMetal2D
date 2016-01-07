@@ -28,7 +28,6 @@ class ImageRenderer: Renderer {
 
 	let device: MTLDevice
 	
-//	var colorTexture: MTLTexture!
 	var colorSamplerState: MTLSamplerState!
 
 	init(device: MTLDevice) {
@@ -41,19 +40,9 @@ class ImageRenderer: Renderer {
 		let t = Float(CGRectGetMinY(rect))
 		let b = Float(CGRectGetMaxY(rect))
 		return [
-/*
-			Vertex(x: -1, y: +1, z: 0, w: 1, u: 0, v: 1),
-			Vertex(x: -1, y: -1, z: 0, w: 1, u: 0, v: 0),
-			Vertex(x: +1, y: -1, z: 0, w: 1, u: 1, v: 0),
-
-			Vertex(x: -1, y: +1, z: 0, w: 1, u: 0, v: 1),
-			Vertex(x: +1, y: -1, z: 0, w: 1, u: 1, v: 0),
-			Vertex(x: +1, y: +1, z: 0, w: 1, u: 1, v: 1),
-*/
 			Vertex(x: l, y: t, z: 0, w: 1, u: 0, v: 1),
 			Vertex(x: l, y: b, z: 0, w: 1, u: 0, v: 0),
 			Vertex(x: r, y: b, z: 0, w: 1, u: 1, v: 0),
-
 			Vertex(x: l, y: t, z: 0, w: 1, u: 0, v: 1),
 			Vertex(x: r, y: b, z: 0, w: 1, u: 1, v: 0),
 			Vertex(x: r, y: t, z: 0, w: 1, u: 1, v: 1),
@@ -91,10 +80,6 @@ class ImageRenderer: Renderer {
 		renderPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .OneMinusSourceAlpha
 		renderPipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .OneMinusSourceAlpha
 
-//		let textureLoader = MTKTextureLoader(device: self.device)
-//		let colorTextureURL = NSBundle.mainBundle().URLForResource("Particle", withExtension: "png")!
-//		self.colorTexture = try! textureLoader.newTextureWithContentsOfURL(colorTextureURL, options: nil)
-
 		let samplerDescriptor = MTLSamplerDescriptor()
 		samplerDescriptor.minFilter = .Nearest
 		samplerDescriptor.magFilter = .Linear
@@ -110,9 +95,7 @@ class ImageRenderer: Renderer {
 		let height = CGFloat(image.height)
 		let halfWidth = width * 0.5
 		let halfHeight = height * 0.5
-//		let vertecies = self.verteciesForRect(CGRectMake(0, 0, width, height))
 		let vertecies = self.verteciesForRect(CGRectMake(-halfWidth, -halfHeight, width, height))
-//		print("image.width,height = \(image.width), \(image.height)")
 		let vertexBuffer = device.newBufferWithBytes(vertecies, length: sizeof(Vertex) * vertecies.count, options: .OptionCPUCacheModeDefault)
 
 		var uniforms = Uniforms(modelViewProjectionMatrix: transform)

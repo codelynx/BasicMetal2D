@@ -162,6 +162,7 @@ class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizer
 	
 	
 	// MARK: -
+
 	var transform = GLKMatrix4Identity
 
 	var scaling: Float = 1.0
@@ -225,19 +226,6 @@ class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizer
 		return GLKMatrix4(t)
 	}
 	
-	var sceneToViewTransform: GLKMatrix4 {
-		let bounds = self.drawView.bounds
-		var t = GLKMatrix4Identity
-		t = GLKMatrix4Translate(t, Float(bounds.size.width * 0.5), Float(bounds.size.height * 0.5), 0)
-		t = self.currentTransform * t
-		return t
-	}
-
-	var viewToSceneTransform: GLKMatrix4 {
-		return self.sceneToViewTransform.invert
-	}
-
-
 	// MARK: -
 	
 	func panGesture(gesture: PanGestureRecognizer) {

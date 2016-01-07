@@ -7,36 +7,66 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CCA055A81C286094009D47DE /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA055A71C286094009D47DE /* ImageRenderer.swift */; };
-		CCA055AA1C2860ED009D47DE /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA055A91C2860ED009D47DE /* Renderer.swift */; };
-		CCA055AC1C298E8A009D47DE /* ImageShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = CCA055AB1C298E8A009D47DE /* ImageShaders.metal */; };
+		CC4405E61C3E7A87000B6114 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4405E51C3E7A87000B6114 /* AppDelegate.swift */; };
+		CC4405EB1C3E7A87000B6114 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC4405E91C3E7A87000B6114 /* Main.storyboard */; };
+		CC4405ED1C3E7A87000B6114 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC4405EC1C3E7A87000B6114 /* Assets.xcassets */; };
+		CC4405F01C3E7A87000B6114 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC4405EE1C3E7A87000B6114 /* LaunchScreen.storyboard */; };
+		CC4406161C3E81E1000B6114 /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406121C3E81E1000B6114 /* DrawViewController.swift */; };
+		CC4406171C3E81E1000B6114 /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406121C3E81E1000B6114 /* DrawViewController.swift */; };
+		CC4406181C3E81E1000B6114 /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406131C3E81E1000B6114 /* ImageRenderer.swift */; };
+		CC4406191C3E81E1000B6114 /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406131C3E81E1000B6114 /* ImageRenderer.swift */; };
+		CC44061A1C3E81E1000B6114 /* ImageShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = CC4406141C3E81E1000B6114 /* ImageShaders.metal */; };
+		CC44061B1C3E81E1000B6114 /* ImageShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = CC4406141C3E81E1000B6114 /* ImageShaders.metal */; };
+		CC44061C1C3E81E1000B6114 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406151C3E81E1000B6114 /* Renderer.swift */; };
+		CC44061D1C3E81E1000B6114 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406151C3E81E1000B6114 /* Renderer.swift */; };
+		CC44061F1C3E9582000B6114 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC44061E1C3E9582000B6114 /* MetalKit.framework */; };
+		CC4406211C3E958C000B6114 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4406201C3E958C000B6114 /* Metal.framework */; };
+		CC4406241C3E9724000B6114 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406221C3E9724000B6114 /* DrawView.swift */; };
+		CC4406261C3E97D8000B6114 /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406251C3E97D8000B6114 /* GeoUtils.swift */; };
+		CC4406271C3E97D8000B6114 /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406251C3E97D8000B6114 /* GeoUtils.swift */; };
+		CC4406291C3E9A71000B6114 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA057291C37905A009D47DE /* Grid.png */; };
+		CC44062A1C3E9A74000B6114 /* BlueMarble.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA055AD1C2A90C5009D47DE /* BlueMarble.png */; };
 		CCA055AE1C2A90C5009D47DE /* BlueMarble.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA055AD1C2A90C5009D47DE /* BlueMarble.png */; };
-		CCA057261C32C6F6009D47DE /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA057251C32C6F6009D47DE /* DrawView.swift */; };
 		CCA0572A1C37905A009D47DE /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA057291C37905A009D47DE /* Grid.png */; };
-		CCA0572D1C397588009D47DE /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA0572C1C397588009D47DE /* GeoUtils.swift */; };
 		CCCE14361C27ECE100A56D3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCE14351C27ECE100A56D3B /* AppDelegate.swift */; };
-		CCCE14381C27ECE100A56D3B /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCE14371C27ECE100A56D3B /* DrawViewController.swift */; };
 		CCCE143A1C27ECE200A56D3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCCE14391C27ECE200A56D3B /* Assets.xcassets */; };
 		CCCE143D1C27ECE200A56D3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCCE143B1C27ECE200A56D3B /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CCA055A71C286094009D47DE /* ImageRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderer.swift; sourceTree = "<group>"; };
-		CCA055A91C2860ED009D47DE /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
-		CCA055AB1C298E8A009D47DE /* ImageShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = ImageShaders.metal; sourceTree = "<group>"; };
+		CC4405E31C3E7A87000B6114 /* Metal2D_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Metal2D_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC4405E51C3E7A87000B6114 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CC4405EA1C3E7A87000B6114 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CC4405EC1C3E7A87000B6114 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC4405EF1C3E7A87000B6114 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CC4405F11C3E7A87000B6114 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC4406121C3E81E1000B6114 /* DrawViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
+		CC4406131C3E81E1000B6114 /* ImageRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderer.swift; sourceTree = "<group>"; };
+		CC4406141C3E81E1000B6114 /* ImageShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = ImageShaders.metal; sourceTree = "<group>"; };
+		CC4406151C3E81E1000B6114 /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		CC44061E1C3E9582000B6114 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
+		CC4406201C3E958C000B6114 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
+		CC4406221C3E9724000B6114 /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		CC4406251C3E97D8000B6114 /* GeoUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoUtils.swift; sourceTree = "<group>"; };
 		CCA055AD1C2A90C5009D47DE /* BlueMarble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueMarble.png; sourceTree = "<group>"; };
-		CCA057251C32C6F6009D47DE /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 		CCA057291C37905A009D47DE /* Grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grid.png; sourceTree = "<group>"; };
-		CCA0572C1C397588009D47DE /* GeoUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoUtils.swift; sourceTree = "<group>"; };
 		CCCE14321C27ECE100A56D3B /* Metal2D_Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Metal2D_Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCCE14351C27ECE100A56D3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CCCE14371C27ECE100A56D3B /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
 		CCCE14391C27ECE200A56D3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CCCE143C1C27ECE200A56D3B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CCCE143E1C27ECE200A56D3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CC4405E01C3E7A87000B6114 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC4406211C3E958C000B6114 /* Metal.framework in Frameworks */,
+				CC44061F1C3E9582000B6114 /* MetalKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CCCE142F1C27ECE100A56D3B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -47,6 +77,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC4405E41C3E7A87000B6114 /* Metal2D_iOS */ = {
+			isa = PBXGroup;
+			children = (
+				CC4405E51C3E7A87000B6114 /* AppDelegate.swift */,
+				CC4405E91C3E7A87000B6114 /* Main.storyboard */,
+				CC4405EC1C3E7A87000B6114 /* Assets.xcassets */,
+				CC4405EE1C3E7A87000B6114 /* LaunchScreen.storyboard */,
+				CC4405F11C3E7A87000B6114 /* Info.plist */,
+			);
+			path = Metal2D_iOS;
+			sourceTree = "<group>";
+		};
+		CC4406111C3E81E1000B6114 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				CC4406121C3E81E1000B6114 /* DrawViewController.swift */,
+				CC4406131C3E81E1000B6114 /* ImageRenderer.swift */,
+				CC4406141C3E81E1000B6114 /* ImageShaders.metal */,
+				CC4406151C3E81E1000B6114 /* Renderer.swift */,
+				CC4406221C3E9724000B6114 /* DrawView.swift */,
+				CC4406251C3E97D8000B6114 /* GeoUtils.swift */,
+			);
+			path = Common;
+			sourceTree = SOURCE_ROOT;
+		};
+		CC4406281C3E9A63000B6114 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CC4406201C3E958C000B6114 /* Metal.framework */,
+				CC44061E1C3E9582000B6114 /* MetalKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CCA055A41C282A52009D47DE /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -59,7 +123,10 @@
 		CCCE14271C27EC9D00A56D3B = {
 			isa = PBXGroup;
 			children = (
+				CC4406281C3E9A63000B6114 /* Frameworks */,
+				CC4406111C3E81E1000B6114 /* Common */,
 				CCCE14341C27ECE100A56D3B /* Metal2D_Mac */,
+				CC4405E41C3E7A87000B6114 /* Metal2D_iOS */,
 				CCCE14331C27ECE100A56D3B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				CCCE14321C27ECE100A56D3B /* Metal2D_Mac.app */,
+				CC4405E31C3E7A87000B6114 /* Metal2D_iOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -77,12 +145,6 @@
 			children = (
 				CCA055A41C282A52009D47DE /* Images */,
 				CCCE14351C27ECE100A56D3B /* AppDelegate.swift */,
-				CCCE14371C27ECE100A56D3B /* DrawViewController.swift */,
-				CCA057251C32C6F6009D47DE /* DrawView.swift */,
-				CCA055A91C2860ED009D47DE /* Renderer.swift */,
-				CCA055A71C286094009D47DE /* ImageRenderer.swift */,
-				CCA055AB1C298E8A009D47DE /* ImageShaders.metal */,
-				CCA0572C1C397588009D47DE /* GeoUtils.swift */,
 				CCCE14391C27ECE200A56D3B /* Assets.xcassets */,
 				CCCE143B1C27ECE200A56D3B /* Main.storyboard */,
 				CCCE143E1C27ECE200A56D3B /* Info.plist */,
@@ -93,6 +155,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		CC4405E21C3E7A87000B6114 /* Metal2D_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC4405F41C3E7A87000B6114 /* Build configuration list for PBXNativeTarget "Metal2D_iOS" */;
+			buildPhases = (
+				CC4405DF1C3E7A87000B6114 /* Sources */,
+				CC4405E01C3E7A87000B6114 /* Frameworks */,
+				CC4405E11C3E7A87000B6114 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Metal2D_iOS;
+			productName = Metal2D_iOS;
+			productReference = CC4405E31C3E7A87000B6114 /* Metal2D_iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 		CCCE14311C27ECE100A56D3B /* Metal2D_Mac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CCCE143F1C27ECE200A56D3B /* Build configuration list for PBXNativeTarget "Metal2D_Mac" */;
@@ -119,6 +198,9 @@
 				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0720;
 				TargetAttributes = {
+					CC4405E21C3E7A87000B6114 = {
+						CreatedOnToolsVersion = 7.2;
+					};
 					CCCE14311C27ECE100A56D3B = {
 						CreatedOnToolsVersion = 7.2;
 					};
@@ -138,11 +220,24 @@
 			projectRoot = "";
 			targets = (
 				CCCE14311C27ECE100A56D3B /* Metal2D_Mac */,
+				CC4405E21C3E7A87000B6114 /* Metal2D_iOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CC4405E11C3E7A87000B6114 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC4405F01C3E7A87000B6114 /* LaunchScreen.storyboard in Resources */,
+				CC4406291C3E9A71000B6114 /* Grid.png in Resources */,
+				CC4405ED1C3E7A87000B6114 /* Assets.xcassets in Resources */,
+				CC44062A1C3E9A74000B6114 /* BlueMarble.png in Resources */,
+				CC4405EB1C3E7A87000B6114 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CCCE14301C27ECE100A56D3B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -157,23 +252,52 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CC4405DF1C3E7A87000B6114 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC4406191C3E81E1000B6114 /* ImageRenderer.swift in Sources */,
+				CC4406171C3E81E1000B6114 /* DrawViewController.swift in Sources */,
+				CC4406241C3E9724000B6114 /* DrawView.swift in Sources */,
+				CC4405E61C3E7A87000B6114 /* AppDelegate.swift in Sources */,
+				CC44061D1C3E81E1000B6114 /* Renderer.swift in Sources */,
+				CC4406271C3E97D8000B6114 /* GeoUtils.swift in Sources */,
+				CC44061B1C3E81E1000B6114 /* ImageShaders.metal in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CCCE142E1C27ECE100A56D3B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCCE14381C27ECE100A56D3B /* DrawViewController.swift in Sources */,
-				CCA055AC1C298E8A009D47DE /* ImageShaders.metal in Sources */,
-				CCA057261C32C6F6009D47DE /* DrawView.swift in Sources */,
+				CC44061A1C3E81E1000B6114 /* ImageShaders.metal in Sources */,
+				CC4406161C3E81E1000B6114 /* DrawViewController.swift in Sources */,
+				CC44061C1C3E81E1000B6114 /* Renderer.swift in Sources */,
 				CCCE14361C27ECE100A56D3B /* AppDelegate.swift in Sources */,
-				CCA0572D1C397588009D47DE /* GeoUtils.swift in Sources */,
-				CCA055AA1C2860ED009D47DE /* Renderer.swift in Sources */,
-				CCA055A81C286094009D47DE /* ImageRenderer.swift in Sources */,
+				CC4406261C3E97D8000B6114 /* GeoUtils.swift in Sources */,
+				CC4406181C3E81E1000B6114 /* ImageRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		CC4405E91C3E7A87000B6114 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC4405EA1C3E7A87000B6114 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CC4405EE1C3E7A87000B6114 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC4405EF1C3E7A87000B6114 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		CCCE143B1C27ECE200A56D3B /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -185,6 +309,99 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		CC4405F21C3E7A87000B6114 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Metal2D_iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.electricwoods.Metal2D-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CC4405F31C3E7A87000B6114 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Metal2D_iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.electricwoods.Metal2D-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		CCCE142C1C27EC9D00A56D3B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -292,6 +509,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CC4405F41C3E7A87000B6114 /* Build configuration list for PBXNativeTarget "Metal2D_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC4405F21C3E7A87000B6114 /* Debug */,
+				CC4405F31C3E7A87000B6114 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CCCE142B1C27EC9D00A56D3B /* Build configuration list for PBXProject "Metal2D" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

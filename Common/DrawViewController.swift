@@ -6,11 +6,33 @@
 //
 //
 
+#if os(OSX)
 import Cocoa
+#elseif os(iOS)
+import UIKit
+#endif
+
 import MetalKit
 import GLKit
 
-class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizerDelegate {
+
+#if os(OSX)
+typealias GestureRecognizerDelegate = NSGestureRecognizerDelegate
+typealias BaseViewController = NSViewController
+typealias GestureRecognizer = NSGestureRecognizer
+typealias PanGestureRecognizer = NSPanGestureRecognizer
+#elseif os(iOS)
+typealias GestureRecognizerDelegate = UIGestureRecognizerDelegate
+typealias BaseViewController = UIViewController
+typealias GestureRecognizer = UIGestureRecognizer
+typealias PanGestureRecognizer = UIPanGestureRecognizer
+#endif
+
+//
+//	DrawViewController
+//
+
+class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizerDelegate {
 
 	struct Point {
 		var x, y: Float
@@ -36,6 +58,7 @@ class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizer
 		drawView.delegate = self
 		drawView.enableSetNeedsDisplay = true
 
+#if os(OSX)
 		let panGesture = NSPanGestureRecognizer(target: self, action: "panGesture:")
 		self.drawView.addGestureRecognizer(panGesture)
 
@@ -51,7 +74,25 @@ class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizer
 		doubleClickGesture.numberOfClicksRequired = 2
 		doubleClickGesture.delegate = self
 		self.drawView.addGestureRecognizer(doubleClickGesture)
+#endif
 
+#if os(iOS)
+		let panGesture = UIPanGestureRecognizer(target: self, action: "panGesture:")
+		self.drawView.addGestureRecognizer(panGesture)
+	
+		let pinchGesture = UIPinchGestureRecognizer(target: self, action: "pinchGesture:")
+		self.drawView.addGestureRecognizer(pinchGesture)
+
+		let singleTapGesture = UITapGestureRecognizer(target: self, action: "singleTapGesture:")
+		singleTapGesture.numberOfTapsRequired = 1
+		self.drawView.addGestureRecognizer(singleTapGesture)
+	
+		let doubleTapGesture = UITapGestureRecognizer(target: self, action: "doubleTapGesture:")
+		doubleTapGesture.numberOfTapsRequired = 2
+		self.drawView.addGestureRecognizer(doubleTapGesture)
+
+		singleTapGesture.requireGestureRecognizerToFail(doubleTapGesture)
+#endif
 
 
 		self.imageRenderer = ImageRenderer(device: drawView.device!)
@@ -72,15 +113,21 @@ class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizer
 		self.setNeedsDisplay()
 	}
 
+#if os(OSX)
 	override var representedObject: AnyObject? {
 		didSet {
 		}
 	}
+#endif
 
 	// MARK: -
 
 	func setupMetal() -> Bool {
+#if os(OSX)
 		assert(self.viewLoaded)
+#else
+		assert(self.isViewLoaded())
+#endif
 		self.drawView.colorPixelFormat = .BGRA8Unorm
 		return true
 	}
@@ -115,13 +162,12 @@ class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizer
 	
 	
 	// MARK: -
-	var strokes = [CGPoint]()
 	var transform = GLKMatrix4Identity
 
 	var scaling: Float = 1.0
 	var translating: GLKVector2 = GLKVector2Make(0, 0)
 	var zoomPoint: GLKVector2 = GLKVector2Make(0, 0)
-	var activeGestures = Set<NSGestureRecognizer>()
+	var activeGestures = Set<GestureRecognizer>()
 
 	var projectionMatrix: GLKMatrix4 {
 		let bounds = self.drawView.bounds
@@ -132,12 +178,12 @@ class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizer
 		return GLKMatrix4MakeOrtho(-halfWidth, halfWidth, halfHeight, -halfHeight, -1, 1)
 	}
 
-	func gestureBegan(gesture: NSGestureRecognizer) {
+	func gestureBegan(gesture: GestureRecognizer) {
 		self.activeGestures.insert(gesture)
 		self.drawView.paused = false
 	}
 
-	func gestureEnded(gesture: NSGestureRecognizer) {
+	func gestureEnded(gesture: GestureRecognizer) {
 		self.activeGestures.remove(gesture)
 		if self.activeGestures.count == 0 {
 			self.drawView.paused = true
@@ -194,12 +240,11 @@ class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizer
 
 	// MARK: -
 	
-	func panGesture(gesture: NSPanGestureRecognizer) {
+	func panGesture(gesture: PanGestureRecognizer) {
 		let translation = gesture.translationInView(self.drawView)
 		let scaleFactor = CGFloat((self.transform * self.operatingTransform).scaleFactor)
 		let translating = GLKVector2Make(Float(translation.x * (1.0 / scaleFactor)), Float(translation.y * (1.0 / scaleFactor)))
 
-		strokes = [CGPoint]()
 		switch gesture.state {
 		case .Began:
 			self.gestureBegan(gesture)
@@ -227,6 +272,7 @@ class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizer
 		return CGPointMake(CGRectGetMidX(self.drawView.bounds), CGRectGetMidY(self.drawView.bounds))
 	}
 
+#if os(OSX)
 	func magnificationGesture(gesture: NSMagnificationGestureRecognizer) {
 
 		let magnification = gesture.magnification
@@ -249,18 +295,45 @@ class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizer
 		}
 		self.setNeedsDisplay()
 	}
-	
+#endif
+
+#if os(iOS)
+	func pinchGesture(gesture: UIPinchGestureRecognizer) {
+		let scaling = Float(gesture.scale)
+		let locationPt = gesture.locationInView(self.drawView)
+		let scenePt = self.locationToScene(locationPt)
+
+		switch gesture.state {
+		case .Began:
+			self.gestureBegan(gesture)
+			self.scaling = scaling
+			self.zoomPoint = scenePt
+		case .Changed:
+			self.scaling = scaling
+		case .Ended:
+			self.gestureEnded(gesture)
+		case .Cancelled:
+			self.gestureEnded(gesture)
+		default: break;
+		}
+		self.setNeedsDisplay()
+	}
+#endif
+
+#if os(OSX)
 	func gestureRecognizer(gestureRecognizer: NSGestureRecognizer, shouldRequireFailureOfGestureRecognizer otherGestureRecognizer: NSGestureRecognizer) -> Bool {
 		if let gestureRecognizer1 = gestureRecognizer as? NSClickGestureRecognizer,
 		   let gestureRecognizer2 = otherGestureRecognizer as? NSClickGestureRecognizer
-		   where gestureRecognizer1.numberOfClicksRequired == 1 && gestureRecognizer2.numberOfClicksRequired == 2 {
+		   where gestureRecognizer1.numberOfClicksRequired == 1 &&
+				 gestureRecognizer2.numberOfClicksRequired == 2 {
 			return true
 		}
 		return false
 	}
+#endif
 	
+#if os(OSX)
 	func singleClickGesture(gesture: NSClickGestureRecognizer) {
-
 		let locationPt = gesture.locationInView(self.drawView)
 		switch gesture.state {
 		case .Ended:
@@ -271,16 +344,48 @@ class DrawViewController: NSViewController, MTKViewDelegate, NSGestureRecognizer
 			break
 		}
 	}
+#endif
 
+#if os(iOS)
+	func singleTapGesture(gesture: UITapGestureRecognizer) {
+		let locationPt = gesture.locationInView(self.drawView)
+		switch gesture.state {
+		case .Ended:
+			let scenePt = self.locationToScene(locationPt)
+			print("scene: (\(scenePt.x), \(scenePt.x))")
+			break
+		default:
+			break
+		}
+	}
+#endif
+
+#if os(OSX)
 	func doubleClickGesture(gesture: NSClickGestureRecognizer) {
 		if gesture.state == .Ended {
-			self.transform = self.transformToFill
+			self.transform = self.transformToFit
 			self.scaling = 1.0
 			self.translating = GLKVector2Make(0, 0)
 			self.setNeedsDisplay()
 		}
 		print("double")
 	}
+#endif
+
+#if os(iOS)
+	func doubleTapGesture(gesture: UITapGestureRecognizer) {
+		switch gesture.state {
+		case .Ended:
+			self.transform = self.transformToFit
+			self.scaling = 1.0
+			self.translating = GLKVector2Make(0, 0)
+			self.setNeedsDisplay()
+			break
+		default:
+			break
+		}
+	}
+#endif
 
 	func locationToScene(location: CGPoint) -> GLKVector2 {
 		let bounds = self.drawView.bounds

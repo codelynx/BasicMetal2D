@@ -23,10 +23,11 @@
 		CC4406241C3E9724000B6114 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406221C3E9724000B6114 /* DrawView.swift */; };
 		CC4406261C3E97D8000B6114 /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406251C3E97D8000B6114 /* GeoUtils.swift */; };
 		CC4406271C3E97D8000B6114 /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406251C3E97D8000B6114 /* GeoUtils.swift */; };
-		CC4406291C3E9A71000B6114 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA057291C37905A009D47DE /* Grid.png */; };
-		CC44062A1C3E9A74000B6114 /* BlueMarble.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA055AD1C2A90C5009D47DE /* BlueMarble.png */; };
-		CCA055AE1C2A90C5009D47DE /* BlueMarble.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA055AD1C2A90C5009D47DE /* BlueMarble.png */; };
-		CCA0572A1C37905A009D47DE /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA057291C37905A009D47DE /* Grid.png */; };
+		CC44062F1C3EA710000B6114 /* BlueMarble.png in Resources */ = {isa = PBXBuildFile; fileRef = CC44062D1C3EA710000B6114 /* BlueMarble.png */; };
+		CC4406301C3EA710000B6114 /* BlueMarble.png in Resources */ = {isa = PBXBuildFile; fileRef = CC44062D1C3EA710000B6114 /* BlueMarble.png */; };
+		CC4406311C3EA710000B6114 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = CC44062E1C3EA710000B6114 /* Grid.png */; };
+		CC4406321C3EA710000B6114 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = CC44062E1C3EA710000B6114 /* Grid.png */; };
+		CC4406331C3EA796000B6114 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406221C3E9724000B6114 /* DrawView.swift */; };
 		CCCE14361C27ECE100A56D3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCE14351C27ECE100A56D3B /* AppDelegate.swift */; };
 		CCCE143A1C27ECE200A56D3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCCE14391C27ECE200A56D3B /* Assets.xcassets */; };
 		CCCE143D1C27ECE200A56D3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCCE143B1C27ECE200A56D3B /* Main.storyboard */; };
@@ -46,8 +47,8 @@
 		CC4406201C3E958C000B6114 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
 		CC4406221C3E9724000B6114 /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 		CC4406251C3E97D8000B6114 /* GeoUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoUtils.swift; sourceTree = "<group>"; };
-		CCA055AD1C2A90C5009D47DE /* BlueMarble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueMarble.png; sourceTree = "<group>"; };
-		CCA057291C37905A009D47DE /* Grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grid.png; sourceTree = "<group>"; };
+		CC44062D1C3EA710000B6114 /* BlueMarble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueMarble.png; sourceTree = "<group>"; };
+		CC44062E1C3EA710000B6114 /* Grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grid.png; sourceTree = "<group>"; };
 		CCCE14321C27ECE100A56D3B /* Metal2D_Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Metal2D_Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCCE14351C27ECE100A56D3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CCCE14391C27ECE200A56D3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -108,11 +109,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CCA055A41C282A52009D47DE /* Images */ = {
+		CC44062B1C3EA710000B6114 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CCA057291C37905A009D47DE /* Grid.png */,
-				CCA055AD1C2A90C5009D47DE /* BlueMarble.png */,
+				CC44062C1C3EA710000B6114 /* Images */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		CC44062C1C3EA710000B6114 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				CC44062D1C3EA710000B6114 /* BlueMarble.png */,
+				CC44062E1C3EA710000B6114 /* Grid.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -124,6 +133,7 @@
 				CC4406111C3E81E1000B6114 /* Common */,
 				CCCE14341C27ECE100A56D3B /* Metal2D_Mac */,
 				CC4405E41C3E7A87000B6114 /* Metal2D_iOS */,
+				CC44062B1C3EA710000B6114 /* Resources */,
 				CCCE14331C27ECE100A56D3B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -140,7 +150,6 @@
 		CCCE14341C27ECE100A56D3B /* Metal2D_Mac */ = {
 			isa = PBXGroup;
 			children = (
-				CCA055A41C282A52009D47DE /* Images */,
 				CCCE14351C27ECE100A56D3B /* AppDelegate.swift */,
 				CCCE14391C27ECE200A56D3B /* Assets.xcassets */,
 				CCCE143B1C27ECE200A56D3B /* Main.storyboard */,
@@ -227,9 +236,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC4406291C3E9A71000B6114 /* Grid.png in Resources */,
 				CC4405ED1C3E7A87000B6114 /* Assets.xcassets in Resources */,
-				CC44062A1C3E9A74000B6114 /* BlueMarble.png in Resources */,
+				CC4406321C3EA710000B6114 /* Grid.png in Resources */,
+				CC4406301C3EA710000B6114 /* BlueMarble.png in Resources */,
 				CC4405EB1C3E7A87000B6114 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,9 +247,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCA055AE1C2A90C5009D47DE /* BlueMarble.png in Resources */,
 				CCCE143A1C27ECE200A56D3B /* Assets.xcassets in Resources */,
-				CCA0572A1C37905A009D47DE /* Grid.png in Resources */,
+				CC4406311C3EA710000B6114 /* Grid.png in Resources */,
+				CC44062F1C3EA710000B6114 /* BlueMarble.png in Resources */,
 				CCCE143D1C27ECE200A56D3B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,6 +277,7 @@
 			files = (
 				CC44061A1C3E81E1000B6114 /* ImageShaders.metal in Sources */,
 				CC4406161C3E81E1000B6114 /* DrawViewController.swift in Sources */,
+				CC4406331C3EA796000B6114 /* DrawView.swift in Sources */,
 				CC44061C1C3E81E1000B6114 /* Renderer.swift in Sources */,
 				CCCE14361C27ECE100A56D3B /* AppDelegate.swift in Sources */,
 				CC4406261C3E97D8000B6114 /* GeoUtils.swift in Sources */,

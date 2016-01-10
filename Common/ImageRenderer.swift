@@ -34,7 +34,22 @@ class ImageRenderer: Renderer {
 		self.device = device
 	}
 
-	func verteciesForRect(rect: CGRect) -> [Vertex] {
+	class func verticesForRect(rect: Rect) -> [Vertex] {
+		let l = rect.minX
+		let r = rect.maxX
+		let t = rect.minY
+		let b = rect.maxY
+		return [
+			Vertex(x: l, y: t, z: 0, w: 1, u: 0, v: 1),
+			Vertex(x: l, y: b, z: 0, w: 1, u: 0, v: 0),
+			Vertex(x: r, y: b, z: 0, w: 1, u: 1, v: 0),
+			Vertex(x: l, y: t, z: 0, w: 1, u: 0, v: 1),
+			Vertex(x: r, y: b, z: 0, w: 1, u: 1, v: 0),
+			Vertex(x: r, y: t, z: 0, w: 1, u: 1, v: 1),
+		]
+	}
+
+	class func verticesForRect(rect: CGRect) -> [Vertex] {
 		let l = Float(CGRectGetMinX(rect))
 		let r = Float(CGRectGetMaxX(rect))
 		let t = Float(CGRectGetMinY(rect))
@@ -90,27 +105,23 @@ class ImageRenderer: Renderer {
 		return try! self.device.newRenderPipelineStateWithDescriptor(renderPipelineDescriptor)
 	}()
 
-	func renderImage(commandEncoder: MTLRenderCommandEncoder, image: MTLTexture, transform: GLKMatrix4) {
-		let width = CGFloat(image.width)
-		let height = CGFloat(image.height)
-		let halfWidth = width * 0.5
-		let halfHeight = height * 0.5
-		let vertecies = self.verteciesForRect(CGRectMake(-halfWidth, -halfHeight, width, height))
-		let vertexBuffer = device.newBufferWithBytes(vertecies, length: sizeof(Vertex) * vertecies.count, options: .OptionCPUCacheModeDefault)
-
+	func renderImage(renderContext: RenderContext, texture: MTLTexture, vertexBuffer: VertexBuffer) {
+		let transform = renderContext.transform
 		var uniforms = Uniforms(modelViewProjectionMatrix: transform)
 		let uniformsBuffer = device.newBufferWithBytes(&uniforms, length: sizeof(Uniforms), options: .OptionCPUCacheModeDefault)
 		
+		
+		let commandEncoder = renderContext.commandEncoder
 		commandEncoder.setRenderPipelineState(self.renderPipelineState)
 
 		commandEncoder.setFrontFacingWinding(.CounterClockwise)
 		commandEncoder.setCullMode(.Back)
-		commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, atIndex: 0)
+		commandEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, atIndex: 0)
 		commandEncoder.setVertexBuffer(uniformsBuffer, offset: 0, atIndex: 1)
 
-		commandEncoder.setFragmentTexture(image, atIndex: 0)
+		commandEncoder.setFragmentTexture(texture, atIndex: 0)
 		commandEncoder.setFragmentSamplerState(self.colorSamplerState, atIndex: 0)
 
-		commandEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: vertecies.count)
+		commandEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: vertexBuffer.count)
 	}
 }

@@ -9,6 +9,14 @@
 import Foundation
 import MetalKit
 
+#if os(OSX)
+typealias XColor = NSColor
+typealias XImage = NSImage
+#elseif os(iOS)
+typealias XColor = UIColor
+typealias XImage = UIImage
+#endif
+
 
 //
 //	protocol Renderer

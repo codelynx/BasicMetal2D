@@ -11,6 +11,78 @@ import CoreGraphics
 import QuartzCore
 import GLKit
 
+struct Point {
+	var x: Float
+	var y: Float
+	init(_ x: Float, _ y: Float) {
+		self.x = x; self.y = y
+	}
+	init(_ x: CGFloat, _ y: CGFloat) {
+		self.x = Float(x); self.y = Float(y)
+	}
+	init(_ x: Int, _ y: Int) {
+		self.x = Float(x); self.y = Float(y)
+	}
+}
+
+struct Size {
+	var width: Float
+	var height: Float
+	init(_ width: Float, _ height: Float) {
+		self.width = width; self.height = height
+	}
+	init(_ width: CGFloat, _ height: CGFloat) {
+		self.width = Float(width); self.height = Float(height)
+	}
+	init(_ width: Int, _ height: Int) {
+		self.width = Float(width); self.height = Float(height)
+	}
+}
+
+struct Rect {
+	var origin: Point
+	var size: Size
+	init(_ origin: Point, _ size: Size) {
+		self.origin = origin; self.size = size
+	}
+	init(_ x: Float, _ y: Float, _ width: Float, _ height: Float) {
+		self.origin = Point(x, y); self.size = Size(width, height)
+	}
+	init(_ x: CGFloat, _ y: CGFloat, _ width: CGFloat, _ height: CGFloat) {
+		self.origin = Point(x, y); self.size = Size(width, height)
+	}
+	init(_ x: Int, _ y: Int, _ width: Int, _ height: Int) {
+		self.origin = Point(x, y); self.size = Size(width, height)
+	}
+	var minX: Float { return min(origin.x, origin.x + size.width) }
+	var maxX: Float { return max(origin.x, origin.x + size.width) }
+	var midX: Float { return (origin.x + origin.x + size.width) / 2.0 }
+	var minY: Float { return min(origin.y, origin.y + size.height) }
+	var maxY: Float { return max(origin.y, origin.y + size.height) }
+	var midY: Float { return (origin.y + origin.y + size.height) / 2.0 }
+
+	var CGRectValue: CGRect { return CGRectMake(CGFloat(origin.x), CGFloat(origin.y), CGFloat(size.width), CGFloat(size.height)) }
+}
+
+extension CGPoint {
+	init(_ point: Point) {
+		self.init(x: CGFloat(point.x), y: CGFloat(point.y))
+	}
+}
+
+extension CGSize {
+	init(_ size: Size) {
+		self.init(width: CGFloat(size.width), height: CGFloat(size.height))
+	}
+}
+
+extension CGRect {
+	init(_ rect: Rect) {
+		self.init(origin: CGPoint(rect.origin), size: CGSize(rect.size))
+	}
+}
+
+
 func CGRectMakeAspectFill(imageSize: CGSize, _ bounds: CGRect) -> CGRect {
 	let result: CGRect
 	let margin: CGFloat

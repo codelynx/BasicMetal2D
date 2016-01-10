@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC40D3731C429E3000B9231D /* Renderable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40D3721C429E3000B9231D /* Renderable.swift */; };
+		CC40D3751C429E6E00B9231D /* RenderContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40D3741C429E6E00B9231D /* RenderContext.swift */; };
+		CC40D3761C42A02900B9231D /* RenderContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40D3741C429E6E00B9231D /* RenderContext.swift */; };
+		CC40D3771C42A02E00B9231D /* Renderable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40D3721C429E3000B9231D /* Renderable.swift */; };
+		CC40D37B1C42BBB700B9231D /* NSImage+Z.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40D37A1C42BBB700B9231D /* NSImage+Z.swift */; };
+		CC40D37D1C42C3C600B9231D /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40D37C1C42C3C600B9231D /* Device.swift */; };
+		CC40D37E1C42C3C600B9231D /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40D37C1C42C3C600B9231D /* Device.swift */; };
+		CC40D3801C42D3F300B9231D /* VertexBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40D37F1C42D3F300B9231D /* VertexBuffer.swift */; };
+		CC40D3811C42D3F300B9231D /* VertexBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC40D37F1C42D3F300B9231D /* VertexBuffer.swift */; };
 		CC4405E61C3E7A87000B6114 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4405E51C3E7A87000B6114 /* AppDelegate.swift */; };
 		CC4405EB1C3E7A87000B6114 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC4405E91C3E7A87000B6114 /* Main.storyboard */; };
 		CC4405ED1C3E7A87000B6114 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC4405EC1C3E7A87000B6114 /* Assets.xcassets */; };
@@ -34,6 +43,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC40D3721C429E3000B9231D /* Renderable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Renderable.swift; sourceTree = "<group>"; };
+		CC40D3741C429E6E00B9231D /* RenderContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderContext.swift; sourceTree = "<group>"; };
+		CC40D37A1C42BBB700B9231D /* NSImage+Z.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSImage+Z.swift"; sourceTree = "<group>"; };
+		CC40D37C1C42C3C600B9231D /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		CC40D37F1C42D3F300B9231D /* VertexBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VertexBuffer.swift; sourceTree = "<group>"; };
 		CC4405E31C3E7A87000B6114 /* Metal2D_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Metal2D_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC4405E51C3E7A87000B6114 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC4405EA1C3E7A87000B6114 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -94,8 +108,13 @@
 				CC4406131C3E81E1000B6114 /* ImageRenderer.swift */,
 				CC4406141C3E81E1000B6114 /* ImageShaders.metal */,
 				CC4406151C3E81E1000B6114 /* Renderer.swift */,
+				CC40D3721C429E3000B9231D /* Renderable.swift */,
+				CC40D37F1C42D3F300B9231D /* VertexBuffer.swift */,
+				CC40D3741C429E6E00B9231D /* RenderContext.swift */,
+				CC40D37A1C42BBB700B9231D /* NSImage+Z.swift */,
 				CC4406221C3E9724000B6114 /* DrawView.swift */,
 				CC4406251C3E97D8000B6114 /* GeoUtils.swift */,
+				CC40D37C1C42C3C600B9231D /* Device.swift */,
 			);
 			path = Common;
 			sourceTree = SOURCE_ROOT;
@@ -264,10 +283,14 @@
 				CC4406191C3E81E1000B6114 /* ImageRenderer.swift in Sources */,
 				CC4406171C3E81E1000B6114 /* DrawViewController.swift in Sources */,
 				CC4406241C3E9724000B6114 /* DrawView.swift in Sources */,
+				CC40D3771C42A02E00B9231D /* Renderable.swift in Sources */,
+				CC40D3761C42A02900B9231D /* RenderContext.swift in Sources */,
 				CC4405E61C3E7A87000B6114 /* AppDelegate.swift in Sources */,
 				CC44061D1C3E81E1000B6114 /* Renderer.swift in Sources */,
 				CC4406271C3E97D8000B6114 /* GeoUtils.swift in Sources */,
+				CC40D3811C42D3F300B9231D /* VertexBuffer.swift in Sources */,
 				CC44061B1C3E81E1000B6114 /* ImageShaders.metal in Sources */,
+				CC40D37E1C42C3C600B9231D /* Device.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +298,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC40D37D1C42C3C600B9231D /* Device.swift in Sources */,
+				CC40D3801C42D3F300B9231D /* VertexBuffer.swift in Sources */,
+				CC40D3751C429E6E00B9231D /* RenderContext.swift in Sources */,
 				CC44061A1C3E81E1000B6114 /* ImageShaders.metal in Sources */,
 				CC4406161C3E81E1000B6114 /* DrawViewController.swift in Sources */,
 				CC4406331C3EA796000B6114 /* DrawView.swift in Sources */,
@@ -282,6 +308,8 @@
 				CCCE14361C27ECE100A56D3B /* AppDelegate.swift in Sources */,
 				CC4406261C3E97D8000B6114 /* GeoUtils.swift in Sources */,
 				CC4406181C3E81E1000B6114 /* ImageRenderer.swift in Sources */,
+				CC40D3731C429E3000B9231D /* Renderable.swift in Sources */,
+				CC40D37B1C42BBB700B9231D /* NSImage+Z.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

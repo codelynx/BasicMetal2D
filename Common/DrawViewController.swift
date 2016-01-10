@@ -17,22 +17,23 @@ import GLKit
 
 
 #if os(OSX)
-typealias GestureRecognizerDelegate = NSGestureRecognizerDelegate
-typealias BaseViewController = NSViewController
-typealias GestureRecognizer = NSGestureRecognizer
-typealias PanGestureRecognizer = NSPanGestureRecognizer
+typealias XGestureRecognizerDelegate = NSGestureRecognizerDelegate
+typealias XViewController = NSViewController
+typealias XGestureRecognizer = NSGestureRecognizer
+typealias XPanGestureRecognizer = NSPanGestureRecognizer
 #elseif os(iOS)
-typealias GestureRecognizerDelegate = UIGestureRecognizerDelegate
-typealias BaseViewController = UIViewController
-typealias GestureRecognizer = UIGestureRecognizer
-typealias PanGestureRecognizer = UIPanGestureRecognizer
+typealias XGestureRecognizerDelegate = UIGestureRecognizerDelegate
+typealias XViewController = UIViewController
+typealias XGestureRecognizer = UIGestureRecognizer
+typealias XPanGestureRecognizer = UIPanGestureRecognizer
 #endif
+
 
 //
 //	DrawViewController
 //
 
-class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizerDelegate {
+class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDelegate {
 
 	struct Point {
 		var x, y: Float
@@ -48,15 +49,20 @@ class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizer
 	var canvasTexture: MTLTexture!
 	var renderingTexture: MTLTexture!
 	var imageRenderer: ImageRenderer!
+	lazy var device: Device = { return Device.sharedDevice }()
+	var marble: ImageNode!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		assert(drawView != nil)
 		let device = MTLCreateSystemDefaultDevice()!
-		drawView.device = device
+		drawView.device = self.device.device
 		drawView.delegate = self
 		drawView.enableSetNeedsDisplay = true
+
+		marble = ImageNode(image: XImage(named: "BlueMarble.png")!, frame: Rect(-1024,-512,2048,1024))
+		
 
 #if os(OSX)
 		let panGesture = NSPanGestureRecognizer(target: self, action: "panGesture:")
@@ -94,15 +100,6 @@ class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizer
 		singleTapGesture.requireGestureRecognizerToFail(doubleTapGesture)
 #endif
 
-
-		self.imageRenderer = ImageRenderer(device: drawView.device!)
-		
-		let loader = MTKTextureLoader(device: device)
-
-		let imageName = arc4random() % 2 == 0 ? "Grid" : "BlueMarble"
-		let imageURL = NSBundle.mainBundle().URLForResource(imageName, withExtension: "png")!
-		self.canvasTexture = try! loader.newTextureWithContentsOfURL(imageURL, options: nil)
-		print("\(self.canvasTexture.width), \(self.canvasTexture.height)")
 
 		self.transform = GLKMatrix4Identity
 		self.scaling = 1.0
@@ -144,8 +141,10 @@ class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizer
 
 		let commandBuffer = commandQueue.commandBuffer()
 		let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)
-		self.imageRenderer.renderImage(commandEncoder, image: self.canvasTexture, transform: self.currentTransform)
 		
+		let renderContext = RenderContext(device: self.device, commandEncoder: commandEncoder, transform: self.currentTransform)
+		
+		marble.recursiveRender(renderContext, transform: GLKMatrix4Identity)
 		commandEncoder.endEncoding()
 		
 		commandBuffer.presentDrawable(drawable)
@@ -168,7 +167,7 @@ class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizer
 	var scaling: Float = 1.0
 	var translating: GLKVector2 = GLKVector2Make(0, 0)
 	var zoomPoint: GLKVector2 = GLKVector2Make(0, 0)
-	var activeGestures = Set<GestureRecognizer>()
+	var activeGestures = Set<XGestureRecognizer>()
 
 	var projectionMatrix: GLKMatrix4 {
 		let bounds = self.drawView.bounds
@@ -179,12 +178,12 @@ class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizer
 		return GLKMatrix4MakeOrtho(-halfWidth, halfWidth, halfHeight, -halfHeight, -1, 1)
 	}
 
-	func gestureBegan(gesture: GestureRecognizer) {
+	func gestureBegan(gesture: XGestureRecognizer) {
 		self.activeGestures.insert(gesture)
 		self.drawView.paused = false
 	}
 
-	func gestureEnded(gesture: GestureRecognizer) {
+	func gestureEnded(gesture: XGestureRecognizer) {
 		self.activeGestures.remove(gesture)
 		if self.activeGestures.count == 0 {
 			self.drawView.paused = true
@@ -228,7 +227,7 @@ class DrawViewController: BaseViewController, MTKViewDelegate, GestureRecognizer
 	
 	// MARK: -
 	
-	func panGesture(gesture: PanGestureRecognizer) {
+	func panGesture(gesture: XPanGestureRecognizer) {
 		let translation = gesture.translationInView(self.drawView)
 		let scaleFactor = CGFloat((self.transform * self.operatingTransform).scaleFactor)
 		let translating = GLKVector2Make(Float(translation.x * (1.0 / scaleFactor)), Float(translation.y * (1.0 / scaleFactor)))

@@ -12,6 +12,7 @@ import Cocoa
 import UIKit
 #endif
 
+
 import MetalKit
 import GLKit
 
@@ -33,36 +34,31 @@ typealias XPanGestureRecognizer = UIPanGestureRecognizer
 //	DrawViewController
 //
 
-class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDelegate {
+class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDelegate, StrokeGestureRecognizerDelegate {
 
-	struct Point {
-		var x, y: Float
-		var vx, vy: Float
-	}
-
-	struct Uniforms {
-		var modelViewProjectionMatrix: GLKMatrix4
-	}
-
-	@IBOutlet var drawView: MTKView!
+	@IBOutlet var drawView: DrawView!
 	var commandQueue: MTLCommandQueue!
-	var canvasTexture: MTLTexture!
-	var renderingTexture: MTLTexture!
-	var imageRenderer: ImageRenderer!
-	lazy var device: Device = { return Device.sharedDevice }()
-	var marble: ImageNode!
+	lazy var device: MTLDevice = { return DeviceManager.device }()
+	var canvas: ImageNode!
+	var particle: MTLTexture!
+	var stroke: StrokeNode?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		assert(drawView != nil)
 		let device = MTLCreateSystemDefaultDevice()!
-		drawView.device = self.device.device
+		drawView.device = self.device
 		drawView.delegate = self
 		drawView.enableSetNeedsDisplay = true
+		drawView.becomeFirstResponder()
+		drawView.drawViewController = self
+		#if os(iOS)
+		drawView.exclusiveTouch = false
+		#endif
 
-		marble = ImageNode(image: XImage(named: "BlueMarble.png")!, frame: Rect(-1024,-512,2048,1024))
-		
+		canvas = ImageNode(image: XImage(named: "BlueMarble.png")!, frame: Rect(-1024,-512,2048,1024))
+		particle = DeviceManager.sharedManager.textureNamed("Particle")
 
 #if os(OSX)
 		let panGesture = NSPanGestureRecognizer(target: self, action: "panGesture:")
@@ -84,7 +80,16 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 
 #if os(iOS)
 		let panGesture = UIPanGestureRecognizer(target: self, action: "panGesture:")
+		panGesture.maximumNumberOfTouches = 2
+		panGesture.minimumNumberOfTouches = 2
 		self.drawView.addGestureRecognizer(panGesture)
+
+		let strokeGesture = StrokeGestureRecognizer(target: self, action: "strokeGesture:")
+		strokeGesture.strokeDelegate = self
+		strokeGesture.maximumNumberOfTouches = 1
+		strokeGesture.minimumNumberOfTouches = 1
+		self.drawView.addGestureRecognizer(strokeGesture)
+
 	
 		let pinchGesture = UIPinchGestureRecognizer(target: self, action: "pinchGesture:")
 		self.drawView.addGestureRecognizer(pinchGesture)
@@ -100,11 +105,9 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 		singleTapGesture.requireGestureRecognizerToFail(doubleTapGesture)
 #endif
 
-
 		self.transform = GLKMatrix4Identity
 		self.scaling = 1.0
-		self.translating = GLKVector2Make(0, 0)
-
+		self.translating = Point(0, 0)
 		
 		self.commandQueue = device.newCommandQueue()
 		self.setNeedsDisplay()
@@ -142,9 +145,12 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 		let commandBuffer = commandQueue.commandBuffer()
 		let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)
 		
-		let renderContext = RenderContext(device: self.device, commandEncoder: commandEncoder, transform: self.currentTransform)
+		let renderContext = RenderContext(commandEncoder: commandEncoder, transform: self.currentTransform)
 		
-		marble.recursiveRender(renderContext, transform: GLKMatrix4Identity)
+		canvas.recursiveRender(renderContext)
+		if let stroke = self.stroke {
+			stroke.recursiveRender(renderContext)
+		}
 		commandEncoder.endEncoding()
 		
 		commandBuffer.presentDrawable(drawable)
@@ -165,8 +171,8 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 	var transform = GLKMatrix4Identity
 
 	var scaling: Float = 1.0
-	var translating: GLKVector2 = GLKVector2Make(0, 0)
-	var zoomPoint: GLKVector2 = GLKVector2Make(0, 0)
+	var translating = Point(0, 0)
+	var zoomPoint = Point(0, 0)
 	var activeGestures = Set<XGestureRecognizer>()
 
 	var projectionMatrix: GLKMatrix4 {
@@ -176,6 +182,15 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 		let halfWidth = width * 0.5
 		let halfHeight = height * 0.5
 		return GLKMatrix4MakeOrtho(-halfWidth, halfWidth, halfHeight, -halfHeight, -1, 1)
+	}
+
+	func locationToScene(location: CGPoint) -> Point {
+		let bounds = self.drawView.bounds
+		let x = (location.x / CGRectGetWidth(bounds) * 2.0) - 1.0
+		let y = -((location.y / CGRectGetHeight(bounds) * 2.0) - 1.0)
+		let normalizedDeviceCoordinatesPt = GLKVector2Make(Float(x), Float(y))
+		let scenePt = self.currentTransform.invert * normalizedDeviceCoordinatesPt
+		return Point(scenePt.x, scenePt.y)
 	}
 
 	func gestureBegan(gesture: XGestureRecognizer) {
@@ -188,8 +203,8 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 		if self.activeGestures.count == 0 {
 			self.drawView.paused = true
 			self.transform = self.transform * self.operatingTransform
-			self.zoomPoint = GLKVector2Make(0, 0)
-			self.translating = GLKVector2Make(0, 0)
+			self.zoomPoint = Point(0, 0)
+			self.translating = Point(0, 0)
 			self.scaling = 1.0
 			print("transform updated")
 		}
@@ -208,7 +223,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 	}
 
 	var transformToFit: GLKMatrix4 {
-		let imageSize = CGSizeMake(CGFloat(self.canvasTexture.width), CGFloat(self.canvasTexture.height))
+		let imageSize = CGSize(self.canvas.frame.size)
 		let viewBounds = self.drawView.bounds
 		let rectToFit = CGRectMakeAspectFit(imageSize, viewBounds)
 		var t = CGAffineTransformIdentity
@@ -217,7 +232,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 	}
 
 	var transformToFill: GLKMatrix4 {
-		let imageSize = CGSizeMake(CGFloat(self.canvasTexture.width), CGFloat(self.canvasTexture.height))
+		let imageSize = CGSize(self.canvas.frame.size)
 		let viewBounds = self.drawView.bounds
 		let rectToFit = CGRectMakeAspectFill(imageSize, viewBounds)
 		var t = CGAffineTransformIdentity
@@ -230,7 +245,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 	func panGesture(gesture: XPanGestureRecognizer) {
 		let translation = gesture.translationInView(self.drawView)
 		let scaleFactor = CGFloat((self.transform * self.operatingTransform).scaleFactor)
-		let translating = GLKVector2Make(Float(translation.x * (1.0 / scaleFactor)), Float(translation.y * (1.0 / scaleFactor)))
+		let translating = Point(Float(translation.x * (1.0 / scaleFactor)), Float(translation.y * (1.0 / scaleFactor)))
 
 		switch gesture.state {
 		case .Began:
@@ -254,6 +269,45 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 		}
 		self.setNeedsDisplay()
 	}
+
+	func strokeGesture(gesture: XPanGestureRecognizer) {
+		print("strokeGesture")
+//		let translation = gesture.translationInView(self.drawView)
+//		let scaleFactor = CGFloat((self.transform * self.operatingTransform).scaleFactor)
+//		let translating = GLKVector2Make(Float(translation.x * (1.0 / scaleFactor)), Float(translation.y * (1.0 / scaleFactor)))
+//		let locationPt = gesture.locationInView(self.drawView)
+//		let scenePt = self.locationToScene(locationPt)
+
+//		#if os(OSX)
+//		let strokeVertex = StrokeVertex(x: scenePt.x, y: scenePt.y, z: 0, force: 0, altitudeAngle: 0, azimuthAngle: 0, velocity: 0, angle: 0)
+//		#elseif os(iOS)
+//		let strokeVertex = StrokeVertex(x: scenePt.x, y: scenePt.y, z: 0, force: 0, altitudeAngle: 0, azimuthAngle: 0, velocity: 0, angle: 0)
+//		#endif
+
+		switch gesture.state {
+		case .Began:
+			self.gestureBegan(gesture)
+//			self.stroke = [StrokeVertex]()
+//			self.stroke = StrokeNode(texture: self.particle!, vertices: [strokeVertex])
+			break
+		case .Changed:
+//			self.stroke?.append([strokeVertex])
+//			print("count=\(self.stroke!.vertices.count)")
+			break
+		case .Ended:
+			self.activeGestures.remove(gesture)
+			self.gestureEnded(gesture)
+			break
+		case .Cancelled:
+			self.activeGestures.remove(gesture)
+			self.gestureEnded(gesture)
+			break
+		default:
+			break
+		}
+		self.setNeedsDisplay()
+	}
+
 
 	var centerPoint: CGPoint {
 		return CGPointMake(CGRectGetMidX(self.drawView.bounds), CGRectGetMidY(self.drawView.bounds))
@@ -352,7 +406,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 		if gesture.state == .Ended {
 			self.transform = self.transformToFit
 			self.scaling = 1.0
-			self.translating = GLKVector2Make(0, 0)
+			self.translating = Point(0, 0)
 			self.setNeedsDisplay()
 		}
 		print("double")
@@ -365,7 +419,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 		case .Ended:
 			self.transform = self.transformToFit
 			self.scaling = 1.0
-			self.translating = GLKVector2Make(0, 0)
+			self.translating = Point(0, 0)
 			self.setNeedsDisplay()
 			break
 		default:
@@ -374,13 +428,82 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 	}
 #endif
 
-	func locationToScene(location: CGPoint) -> GLKVector2 {
-		let bounds = self.drawView.bounds
-		let x = (location.x / CGRectGetWidth(bounds) * 2.0) - 1.0
-		let y = -((location.y / CGRectGetHeight(bounds) * 2.0) - 1.0)
-		let normalizedDeviceCoordinatesPt = GLKVector2Make(Float(x), Float(y))
-		let scenePt = self.currentTransform.invert * normalizedDeviceCoordinatesPt
-		return scenePt
+#if os(iOS)
+	var renderPassDescriptor: MTLRenderPassDescriptor {
+//		let texture: MTLTexture? = self.canvas!.texture
+		let renderPassDescriptor = MTLRenderPassDescriptor()
+		renderPassDescriptor.colorAttachments[0].texture = self.canvas!.texture
+		renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.9, 0.9, 0.9, 1)
+		renderPassDescriptor.colorAttachments[0].loadAction = .Load
+		renderPassDescriptor.colorAttachments[0].storeAction = .Store
+		return renderPassDescriptor
 	}
+#endif
+
+#if os(iOS)
+	var activeStrokes = [UITouch: [StrokeVertex]]()
+
+	func vertexFromTouch(touch: UITouch) -> StrokeVertex {
+		let locationPt = touch.locationInView(self.drawView)
+		let scenePt = self.locationToScene(locationPt)
+		return StrokeVertex(
+				x: scenePt.x, y: scenePt.y, z: 0, force: Float(touch.force),
+				altitudeAngle: Float(touch.altitudeAngle),
+				azimuthAngle: Float(touch.azimuthAngleInView(self.drawView)),
+				velocity: 0, angle: 0)
+	}
+
+	func strokeTouchesBegan(gesture: StrokeGestureRecognizer, touches: Set<UITouch>, withEvent event: UIEvent) {
+		print("\(__FUNCTION__)")
+		for touch in touches {
+			var vertices = [StrokeVertex]()
+			for subtouch in event.coalescedTouchesForTouch(touch) ?? [] {
+				let vertex = self.vertexFromTouch(subtouch)
+				vertices.append(vertex)
+			}
+			self.activeStrokes[touch] = vertices
+		}
+	}
+
+	func strokeTouchesMoved(gesture: StrokeGestureRecognizer, touches: Set<UITouch>, withEvent event: UIEvent) {
+		print("\(__FUNCTION__)")
+	
+		let commandBuffer = commandQueue.commandBuffer()
+		let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)
+		let renderContext = RenderContext(commandEncoder: commandEncoder, transform: self.currentTransform)
+//		canvas.recursiveRender(renderContext)
+
+		for touch in touches {
+			var vertices = self.activeStrokes[touch] ?? []
+			for subtouch in event.coalescedTouchesForTouch(touch) ?? [] {
+				let vertex = self.vertexFromTouch(subtouch)
+				vertices.append(vertex)
+			}
+			self.activeStrokes[touch] = vertices
+			let strokeNode = StrokeNode(texture: particle, vertices: vertices)
+			strokeNode.recursiveRender(renderContext)
+		}
+
+		commandEncoder.endEncoding()
+		commandBuffer.commit()
+
+		self.setNeedsDisplay()
+	}
+
+	func strokeTouchesEnded(gesture: StrokeGestureRecognizer, touches: Set<UITouch>, withEvent event: UIEvent) {
+		print("\(__FUNCTION__)")
+		for touch in touches {
+			self.activeStrokes[touch] = nil
+		}
+	}
+
+	func strokeTouchesCancelled(gesture: StrokeGestureRecognizer, touches: Set<UITouch>, withEvent event: UIEvent) {
+		print("\(__FUNCTION__)")
+		for touch in touches {
+			self.activeStrokes[touch] = nil
+		}
+	}
+#endif
+
 }
 

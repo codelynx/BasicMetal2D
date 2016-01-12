@@ -22,6 +22,8 @@ import MetalKit
 
 class DrawView: MTKView {
 
+	weak var drawViewController: DrawViewController?
+
 #if os(OSX)
 	override var flipped: Bool {
 		return true

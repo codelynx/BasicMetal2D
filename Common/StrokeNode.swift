@@ -19,7 +19,7 @@ class StrokeNode: Node {
 	
 	var texture: MTLTexture
 	var vertices: [StrokeVertex]
-	private var _vertexBuffer: VertexBuffer<StrokeVertex>?
+	fileprivate var _vertexBuffer: VertexBuffer<StrokeVertex>?
 
 	init(texture: MTLTexture, vertices: [StrokeVertex]) {
 		self.texture = DeviceManager.sharedManager.textureNamed("Particle")!
@@ -34,14 +34,14 @@ class StrokeNode: Node {
 		return _vertexBuffer
 	}
 	
-	override func render(context: RenderContext) {
+	override func render(_ context: RenderContext) {
 		if let vertexBuffer = self.vertexBuffer {
 			let renderer = DeviceManager.strokeRenderer
 			renderer.renderStroke(context, texture: texture, vertexBuffer: vertexBuffer)
 		}
 	}
 	
-	func append(vertices: [StrokeVertex]) {
+	func append(_ vertices: [StrokeVertex]) {
 		self.vertexBuffer?.append(vertices)
 		self.vertices += vertices
 	}

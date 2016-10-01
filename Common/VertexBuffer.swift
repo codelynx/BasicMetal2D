@@ -24,8 +24,8 @@ class VertexBuffer<T> {
 		self.device = device
 		self.count = verticies.count
 		self.capacity = capacity ?? verticies.count
-		let length = sizeof(T) * self.capacity
-		self.buffer = device.newBufferWithBytes(verticies, length: length, options: .CPUCacheModeDefaultCache)
+		let length = MemoryLayout<T>.size * self.capacity
+		self.buffer = device.makeBuffer(bytes: verticies, length: length, options: MTLResourceOptions())
 		assert(self.count <= self.capacity)
 		/*
 		let vertexArray = UnsafeMutablePointer<T>(self.buffer.contents())
@@ -36,9 +36,9 @@ class VertexBuffer<T> {
 		*/
 	}
 
-	func append(verticies: [T]) {
+	func append(_ verticies: [T]) {
 		if self.count + verticies.count < self.capacity {
-			let vertexArray = UnsafeMutablePointer<T>(self.buffer.contents())
+			let vertexArray = UnsafeMutablePointer<T>(OpaquePointer(self.buffer.contents()))
 			for index in 0 ..< verticies.count {
 				vertexArray[self.count + index] = verticies[index]
 			}

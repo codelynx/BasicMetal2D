@@ -15,9 +15,9 @@ import ImageIO
 extension NSImage {
 
 	// somehow OSX does not provide CGImage property
-	var CGImage: CGImageRef? {
-		if let data = self.TIFFRepresentation,
-		   let imageSource = CGImageSourceCreateWithData(data, nil) {
+	var CGImage: CGImage? {
+		if let data = self.tiffRepresentation,
+		   let imageSource = CGImageSourceCreateWithData(data as CFData, nil) {
 			if CGImageSourceGetCount(imageSource) > 0 {
 				return CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
 			}

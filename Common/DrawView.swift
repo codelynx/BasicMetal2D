@@ -25,7 +25,7 @@ class DrawView: MTKView {
 	weak var drawViewController: DrawViewController?
 
 #if os(OSX)
-	override var flipped: Bool {
+	override var isFlipped: Bool {
 		return true
 	}
 #endif

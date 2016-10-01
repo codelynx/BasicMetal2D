@@ -27,7 +27,7 @@ extension MTLDevice {
 
 protocol Renderable {
 
-	func render(context: RenderContext)
+	func render(_ context: RenderContext)
 
 }
 
@@ -45,10 +45,10 @@ class Node: Renderable {
 		self.transform = transform
 	}
 
-	func render(context: RenderContext) {
+	func render(_ context: RenderContext) {
 	}
 
-	func recursiveRender(context: RenderContext) {
+	func recursiveRender(_ context: RenderContext) {
 		self.render(context * self.transform)
 		if let subnodes = self.subnodes {
 			for subnode in subnodes {

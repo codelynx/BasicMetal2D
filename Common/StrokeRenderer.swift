@@ -54,59 +54,59 @@ class StrokeRenderer: Renderer {
 	var vertexDescriptor: MTLVertexDescriptor {
 		let vertexDescriptor = MTLVertexDescriptor()
 		vertexDescriptor.attributes[0].offset = 0
-		vertexDescriptor.attributes[0].format = .Float2
+		vertexDescriptor.attributes[0].format = .float2
 		vertexDescriptor.attributes[0].bufferIndex = 0
 
-		vertexDescriptor.layouts[0].stepFunction = .PerVertex
-		vertexDescriptor.layouts[0].stride = sizeof(Vertex)
+		vertexDescriptor.layouts[0].stepFunction = .perVertex
+		vertexDescriptor.layouts[0].stride = MemoryLayout<Vertex>.size
 		return vertexDescriptor
 	}
 
 	lazy var renderPipelineState: MTLRenderPipelineState = {
 		let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
 		renderPipelineDescriptor.vertexDescriptor = self.vertexDescriptor
-		renderPipelineDescriptor.vertexFunction = self.library.newFunctionWithName("stroke_vertex")!
-		renderPipelineDescriptor.fragmentFunction = self.library.newFunctionWithName("stroke_fragment")!
+		renderPipelineDescriptor.vertexFunction = self.library.makeFunction(name: "stroke_vertex")!
+		renderPipelineDescriptor.fragmentFunction = self.library.makeFunction(name: "stroke_fragment")!
 
-		renderPipelineDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm
-		renderPipelineDescriptor.colorAttachments[0].blendingEnabled = true
-		renderPipelineDescriptor.colorAttachments[0].rgbBlendOperation = .Add
-		renderPipelineDescriptor.colorAttachments[0].alphaBlendOperation = .Add
+		renderPipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
+		renderPipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
+		renderPipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
+		renderPipelineDescriptor.colorAttachments[0].alphaBlendOperation = .add
 
-		renderPipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .SourceAlpha
-		renderPipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .SourceAlpha
-		renderPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .OneMinusSourceAlpha
-		renderPipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .OneMinusSourceAlpha
+		renderPipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+		renderPipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
+		renderPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+		renderPipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
 
 		let samplerDescriptor = MTLSamplerDescriptor()
-		samplerDescriptor.minFilter = .Nearest
-		samplerDescriptor.magFilter = .Linear
-		samplerDescriptor.sAddressMode = .Repeat
-		samplerDescriptor.tAddressMode = .Repeat
-		self.colorSamplerState = self.device.newSamplerStateWithDescriptor(samplerDescriptor)
+		samplerDescriptor.minFilter = .nearest
+		samplerDescriptor.magFilter = .linear
+		samplerDescriptor.sAddressMode = .repeat
+		samplerDescriptor.tAddressMode = .repeat
+		self.colorSamplerState = self.device.makeSamplerState(descriptor: samplerDescriptor)
 
-		return try! self.device.newRenderPipelineStateWithDescriptor(renderPipelineDescriptor)
+		return try! self.device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
 	}()
 	
-	func vertexBufferWithVertices(vertices: [Vertex], capacity: Int) -> VertexBuffer<Vertex> {
+	func vertexBufferWithVertices(_ vertices: [Vertex], capacity: Int) -> VertexBuffer<Vertex> {
 		return VertexBuffer<Vertex>(self.device, vertices, capacity)
 	}
 
-	func renderStroke(renderContext: RenderContext, texture: MTLTexture, vertexBuffer: VertexBuffer<Vertex>) {
+	func renderStroke(_ renderContext: RenderContext, texture: MTLTexture, vertexBuffer: VertexBuffer<Vertex>) {
 		let transform = renderContext.transform
 		var uniforms = Uniforms(modelViewProjectionMatrix: transform)
-		let uniformsBuffer = device.newBufferWithBytes(&uniforms, length: sizeof(Uniforms), options: .OptionCPUCacheModeDefault)
+		let uniformsBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<Uniforms>.size, options: MTLResourceOptions())
 
 		let commandEncoder = renderContext.commandEncoder
 		commandEncoder.setRenderPipelineState(self.renderPipelineState)
 
-		commandEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, atIndex: 0)
-		commandEncoder.setVertexBuffer(uniformsBuffer, offset: 0, atIndex: 1)
+		commandEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, at: 0)
+		commandEncoder.setVertexBuffer(uniformsBuffer, offset: 0, at: 1)
 
-		commandEncoder.setFragmentTexture(texture, atIndex: 0)
-		commandEncoder.setFragmentSamplerState(self.colorSamplerState, atIndex: 0)
+		commandEncoder.setFragmentTexture(texture, at: 0)
+		commandEncoder.setFragmentSamplerState(self.colorSamplerState, at: 0)
 
-		commandEncoder.drawPrimitives(.Point, vertexStart: 0, vertexCount: vertexBuffer.count)
+		commandEncoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: vertexBuffer.count)
 //		commandEncoder.drawPrimitives(.LineStrip, vertexStart: 0, vertexCount: vertexBuffer.count)
 	}
 }

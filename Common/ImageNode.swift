@@ -20,8 +20,8 @@ class ImageNode: Node {
 
 	var image: XImage
 	var frame: Rect
-	private var _vertexBuffer: VertexBuffer<ImageVertex>?
-	private var _texture: MTLTexture?
+	fileprivate var _vertexBuffer: VertexBuffer<ImageVertex>?
+	fileprivate var _texture: MTLTexture?
 
 	init(image: XImage, frame: Rect) {
 		self.image = image
@@ -31,9 +31,9 @@ class ImageNode: Node {
 
 	var texture: MTLTexture? {
 		if _texture == nil {
-			if let image = self.image.CGImage {
+			if let image = self.image.cgImage {
 				let device = DeviceManager.device
-				do { _texture = try device.textureLoader.newTextureWithCGImage(image, options: nil) }
+				do { _texture = try device.textureLoader.newTexture(with: image, options: nil) }
 				catch let error { print("\(error)") }
 			}
 		}
@@ -49,7 +49,7 @@ class ImageNode: Node {
 	}
 
 
-	override func render(context: RenderContext) {
+	override func render(_ context: RenderContext) {
 		let renderer = DeviceManager.imageRenderer
 		if let texture = self.texture, let vertexBuffer = self.vertexBuffer {
 			renderer.renderImage(context, texture: texture, vertexBuffer: vertexBuffer)

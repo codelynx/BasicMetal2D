@@ -7,7 +7,7 @@
 //
 
 
-#if os(OSX)
+#if os(macOS)
 import Cocoa
 #elseif os(iOS)
 import UIKit
@@ -22,8 +22,10 @@ import MetalKit
 
 class DrawView: MTKView {
 
-#if os(OSX)
-	override var flipped: Bool {
+	weak var drawViewController: DrawViewController?
+
+#if os(macOS)
+	override var isFlipped: Bool {
 		return true
 	}
 #endif

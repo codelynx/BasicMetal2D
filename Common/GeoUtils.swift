@@ -61,7 +61,7 @@ struct Rect {
 	var maxY: Float { return max(origin.y, origin.y + size.height) }
 	var midY: Float { return (origin.y + origin.y + size.height) / 2.0 }
 
-	var CGRectValue: CGRect { return CGRectMake(CGFloat(origin.x), CGFloat(origin.y), CGFloat(size.width), CGFloat(size.height)) }
+	var CGRectValue: CGRect { return CGRect(x: CGFloat(origin.x), y: CGFloat(origin.y), width: CGFloat(size.width), height: CGFloat(size.height)) }
 }
 
 extension CGPoint {
@@ -83,30 +83,30 @@ extension CGRect {
 }
 
 
-func CGRectMakeAspectFill(imageSize: CGSize, _ bounds: CGRect) -> CGRect {
+func CGRectMakeAspectFill(_ imageSize: CGSize, _ bounds: CGRect) -> CGRect {
 	let result: CGRect
 	let margin: CGFloat
 	let horizontalRatioToFit = bounds.size.width / imageSize.width
 	let verticalRatioToFit = bounds.size.height / imageSize.height
 	let imageHeightWhenItFitsHorizontally = horizontalRatioToFit * imageSize.height
 	let imageWidthWhenItFitsVertically = verticalRatioToFit * imageSize.width
-	let minX = CGRectGetMinX(bounds)
-	let minY = CGRectGetMinY(bounds)
+	let minX = bounds.minX
+	let minY = bounds.minY
 
 	if (imageHeightWhenItFitsHorizontally > bounds.size.height) {
 		margin = (imageHeightWhenItFitsHorizontally - bounds.size.height) * 0.5
-		result = CGRectMake(minX, minY - margin, imageSize.width * horizontalRatioToFit, imageSize.height * horizontalRatioToFit)
+		result = CGRect(x: minX, y: minY - margin, width: imageSize.width * horizontalRatioToFit, height: imageSize.height * horizontalRatioToFit)
 	}
 	else {
 		margin = (imageWidthWhenItFitsVertically - bounds.size.width) * 0.5
-		result = CGRectMake(minX - margin, minY, imageSize.width * verticalRatioToFit, imageSize.height * verticalRatioToFit)
+		result = CGRect(x: minX - margin, y: minY, width: imageSize.width * verticalRatioToFit, height: imageSize.height * verticalRatioToFit)
 	}
 	return result;
 }
 
-func CGRectMakeAspectFit(imageSize: CGSize, _ bounds: CGRect) -> CGRect {
-	let minX = CGRectGetMinX(bounds)
-	let minY = CGRectGetMinY(bounds)
+func CGRectMakeAspectFit(_ imageSize: CGSize, _ bounds: CGRect) -> CGRect {
+	let minX = bounds.minX
+	let minY = bounds.minY
 	let widthRatio = bounds.size.width / imageSize.width
 	let heightRatio = bounds.size.height / imageSize.height
 	let ratio = min(widthRatio, heightRatio)
@@ -114,16 +114,16 @@ func CGRectMakeAspectFit(imageSize: CGSize, _ bounds: CGRect) -> CGRect {
 	let height = imageSize.height * ratio
 	let xmargin = (bounds.size.width - width) / 2.0
 	let ymargin = (bounds.size.height - height) / 2.0
-	return CGRectMake(minX + xmargin, minY + ymargin, width, height)
+	return CGRect(x: minX + xmargin, y: minY + ymargin, width: width, height: height)
 }
 
-func CGSizeMakeAspectFit(imageSize: CGSize, frameSize: CGSize) -> CGSize {
+func CGSizeMakeAspectFit(_ imageSize: CGSize, frameSize: CGSize) -> CGSize {
 	let widthRatio = frameSize.width / imageSize.width
 	let heightRatio = frameSize.height / imageSize.height
 	let ratio = (widthRatio < heightRatio) ? widthRatio : heightRatio
 	let width = imageSize.width * ratio
 	let height = imageSize.height * ratio
-	return CGSizeMake(width, height)
+	return CGSize(width: width, height: height)
 }
 
 extension GLKMatrix4 {

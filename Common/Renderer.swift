@@ -9,7 +9,7 @@
 import Foundation
 import MetalKit
 
-#if os(OSX)
+#if os(macOS)
 typealias XColor = NSColor
 typealias XImage = NSImage
 #elseif os(iOS)

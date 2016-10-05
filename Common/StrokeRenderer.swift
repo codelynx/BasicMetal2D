@@ -1,65 +1,62 @@
 //
-//  ImageRenderer.swift
+//  StrokeRenderer.swift
 //  Metal2D
 //
-//  Created by Kaz Yoshikawa on 12/22/15.
+//  Created by Kaz Yoshikawa on 1/11/16.
 //
 //
 
 import Foundation
-import Metal
+import CoreGraphics
+import QuartzCore
 import GLKit
 
-typealias ImageVertex = ImageRenderer.Vertex
+typealias StrokeVertex = StrokeRenderer.Vertex
 
 //
-//	ImageRenderer
+//	StrokeRenderer
 //
 
-class ImageRenderer: Renderer {
+class StrokeRenderer: Renderer {
 
 	struct Vertex {
-		var x, y, z, w, u, v: Float
+		var x: Float
+		var y: Float
+		var z: Float
+		var force: Float
+
+		var altitudeAngle: Float
+		var azimuthAngle: Float
+		var velocity: Float
+		var angle: Float
+		init(x: Float, y: Float, z: Float, force: Float, altitudeAngle: Float, azimuthAngle: Float, velocity: Float, angle: Float) {
+			self.x = x; self.y = y; self.z = z; self.force = force
+			self.altitudeAngle = altitudeAngle; self.azimuthAngle = azimuthAngle; self.velocity = velocity; self.angle = angle
+		}
+		init() {
+			self.x = 0; self.y = 0; self.z = 0; self.force = 0
+			self.altitudeAngle = 0; self.azimuthAngle = 0; self.velocity = 0; self.angle = 0
+		}
 	}
 
 	struct Uniforms {
 		var modelViewProjectionMatrix: GLKMatrix4
 	}
 
-
 	let device: MTLDevice
-	
+
 	var colorSamplerState: MTLSamplerState!
 
 	init(device: MTLDevice) {
 		self.device = device
 	}
 
-	func verticesForRect(_ rect: Rect) -> [Vertex] {
-		let l = rect.minX
-		let r = rect.maxX
-		let t = rect.minY
-		let b = rect.maxY
-		return [
-			Vertex(x: l, y: t, z: 0, w: 1, u: 0, v: 1),
-			Vertex(x: l, y: b, z: 0, w: 1, u: 0, v: 0),
-			Vertex(x: r, y: b, z: 0, w: 1, u: 1, v: 0),
-			Vertex(x: l, y: t, z: 0, w: 1, u: 0, v: 1),
-			Vertex(x: r, y: b, z: 0, w: 1, u: 1, v: 0),
-			Vertex(x: r, y: t, z: 0, w: 1, u: 1, v: 1),
-		]
-	}
-
 	var vertexDescriptor: MTLVertexDescriptor {
 		let vertexDescriptor = MTLVertexDescriptor()
 		vertexDescriptor.attributes[0].offset = 0
-		vertexDescriptor.attributes[0].format = .float4
+		vertexDescriptor.attributes[0].format = .float2
 		vertexDescriptor.attributes[0].bufferIndex = 0
 
-		vertexDescriptor.attributes[1].offset = 0
-		vertexDescriptor.attributes[1].format = .float2
-		vertexDescriptor.attributes[1].bufferIndex = 0
-		
 		vertexDescriptor.layouts[0].stepFunction = .perVertex
 		vertexDescriptor.layouts[0].stride = MemoryLayout<Vertex>.size
 		return vertexDescriptor
@@ -68,10 +65,10 @@ class ImageRenderer: Renderer {
 	lazy var renderPipelineState: MTLRenderPipelineState = {
 		let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
 		renderPipelineDescriptor.vertexDescriptor = self.vertexDescriptor
-		renderPipelineDescriptor.vertexFunction = self.library.makeFunction(name: "image_vertex")!
-		renderPipelineDescriptor.fragmentFunction = self.library.makeFunction(name: "image_fragment")!
+		renderPipelineDescriptor.vertexFunction = self.library.makeFunction(name: "stroke_vertex")!
+		renderPipelineDescriptor.fragmentFunction = self.library.makeFunction(name: "stroke_fragment")!
 
-		renderPipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+		renderPipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
 		renderPipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
 		renderPipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
 		renderPipelineDescriptor.colorAttachments[0].alphaBlendOperation = .add
@@ -90,30 +87,26 @@ class ImageRenderer: Renderer {
 
 		return try! self.device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
 	}()
-
-	func vertexBufferForRect(_ rect: Rect) -> VertexBuffer<Vertex>? {
-		let verticies = self.verticesForRect(rect)
-		return VertexBuffer<Vertex>(device, verticies)
+	
+	func vertexBufferWithVertices(_ vertices: [Vertex], capacity: Int) -> VertexBuffer<Vertex> {
+		return VertexBuffer<Vertex>(self.device, vertices, capacity)
 	}
 
-	func renderImage(_ renderContext: RenderContext, texture: MTLTexture, vertexBuffer: VertexBuffer<Vertex>) {
+	func renderStroke(_ renderContext: RenderContext, texture: MTLTexture, vertexBuffer: VertexBuffer<Vertex>) {
 		let transform = renderContext.transform
 		var uniforms = Uniforms(modelViewProjectionMatrix: transform)
 		let uniformsBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<Uniforms>.size, options: MTLResourceOptions())
-		
-		
+
 		let commandEncoder = renderContext.commandEncoder
 		commandEncoder.setRenderPipelineState(self.renderPipelineState)
 
-		commandEncoder.setFrontFacing(.counterClockwise)
-		commandEncoder.setCullMode(.back)
 		commandEncoder.setVertexBuffer(vertexBuffer.buffer, offset: 0, at: 0)
 		commandEncoder.setVertexBuffer(uniformsBuffer, offset: 0, at: 1)
 
 		commandEncoder.setFragmentTexture(texture, at: 0)
 		commandEncoder.setFragmentSamplerState(self.colorSamplerState, at: 0)
 
-		commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexBuffer.count)
+		commandEncoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: vertexBuffer.count)
+//		commandEncoder.drawPrimitives(.LineStrip, vertexStart: 0, vertexCount: vertexBuffer.count)
 	}
 }
-

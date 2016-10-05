@@ -16,7 +16,12 @@ import GLKit
 //
 
 struct RenderContext {
-	let device: Device
 	let commandEncoder: MTLRenderCommandEncoder
 	let transform: GLKMatrix4
+	var device: MTLDevice { return commandEncoder.device }
+}
+
+
+func * (l: RenderContext, r: GLKMatrix4) -> RenderContext {
+	return RenderContext(commandEncoder: l.commandEncoder, transform: l.transform * r)
 }

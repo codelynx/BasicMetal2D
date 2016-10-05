@@ -39,8 +39,6 @@
 		CC44061B1C3E81E1000B6114 /* ImageShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = CC4406141C3E81E1000B6114 /* ImageShaders.metal */; };
 		CC44061C1C3E81E1000B6114 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406151C3E81E1000B6114 /* Renderer.swift */; };
 		CC44061D1C3E81E1000B6114 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406151C3E81E1000B6114 /* Renderer.swift */; };
-		CC44061F1C3E9582000B6114 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC44061E1C3E9582000B6114 /* MetalKit.framework */; };
-		CC4406211C3E958C000B6114 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4406201C3E958C000B6114 /* Metal.framework */; };
 		CC4406241C3E9724000B6114 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406221C3E9724000B6114 /* DrawView.swift */; };
 		CC4406261C3E97D8000B6114 /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406251C3E97D8000B6114 /* GeoUtils.swift */; };
 		CC4406271C3E97D8000B6114 /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406251C3E97D8000B6114 /* GeoUtils.swift */; };
@@ -49,6 +47,8 @@
 		CC4406311C3EA710000B6114 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = CC44062E1C3EA710000B6114 /* Grid.png */; };
 		CC4406321C3EA710000B6114 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = CC44062E1C3EA710000B6114 /* Grid.png */; };
 		CC4406331C3EA796000B6114 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4406221C3E9724000B6114 /* DrawView.swift */; };
+		CC924D261DA48138007DFA70 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC924D241DA48138007DFA70 /* Metal.framework */; };
+		CC924D271DA48138007DFA70 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC924D251DA48138007DFA70 /* MetalKit.framework */; };
 		CCCE14361C27ECE100A56D3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCE14351C27ECE100A56D3B /* AppDelegate.swift */; };
 		CCCE143A1C27ECE200A56D3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCCE14391C27ECE200A56D3B /* Assets.xcassets */; };
 		CCCE143D1C27ECE200A56D3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCCE143B1C27ECE200A56D3B /* Main.storyboard */; };
@@ -75,12 +75,12 @@
 		CC4406131C3E81E1000B6114 /* ImageRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderer.swift; sourceTree = "<group>"; };
 		CC4406141C3E81E1000B6114 /* ImageShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = ImageShaders.metal; sourceTree = "<group>"; };
 		CC4406151C3E81E1000B6114 /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Renderer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		CC44061E1C3E9582000B6114 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
-		CC4406201C3E958C000B6114 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
 		CC4406221C3E9724000B6114 /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 		CC4406251C3E97D8000B6114 /* GeoUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoUtils.swift; sourceTree = "<group>"; };
 		CC44062D1C3EA710000B6114 /* BlueMarble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueMarble.png; sourceTree = "<group>"; };
 		CC44062E1C3EA710000B6114 /* Grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grid.png; sourceTree = "<group>"; };
+		CC924D241DA48138007DFA70 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Metal.framework; sourceTree = DEVELOPER_DIR; };
+		CC924D251DA48138007DFA70 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
 		CCCE14321C27ECE100A56D3B /* Metal2D_Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Metal2D_Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCCE14351C27ECE100A56D3B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CCCE14391C27ECE200A56D3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -93,8 +93,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC4406211C3E958C000B6114 /* Metal.framework in Frameworks */,
-				CC44061F1C3E9582000B6114 /* MetalKit.framework in Frameworks */,
+				CC924D261DA48138007DFA70 /* Metal.framework in Frameworks */,
+				CC924D271DA48138007DFA70 /* MetalKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,8 +162,8 @@
 		CC4406281C3E9A63000B6114 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CC4406201C3E958C000B6114 /* Metal.framework */,
-				CC44061E1C3E9582000B6114 /* MetalKit.framework */,
+				CC924D241DA48138007DFA70 /* Metal.framework */,
+				CC924D251DA48138007DFA70 /* MetalKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

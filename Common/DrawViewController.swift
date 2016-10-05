@@ -6,7 +6,7 @@
 //
 //
 
-#if os(OSX)
+#if os(macOS)
 import Cocoa
 #elseif os(iOS)
 import UIKit
@@ -17,7 +17,7 @@ import MetalKit
 import GLKit
 
 
-#if os(OSX)
+#if os(macOS)
 typealias XGestureRecognizerDelegate = NSGestureRecognizerDelegate
 typealias XViewController = NSViewController
 typealias XGestureRecognizer = NSGestureRecognizer
@@ -53,14 +53,14 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 		drawView.enableSetNeedsDisplay = true
 		drawView.becomeFirstResponder()
 		drawView.drawViewController = self
-		#if os(iOS)
+		#if os(macOS)
 		drawView.isExclusiveTouch = false
 		#endif
 
 		canvas = ImageNode(image: XImage(named: "BlueMarble.png")!, frame: Rect(-1024,-512,2048,1024))
 		particle = DeviceManager.sharedManager.textureNamed("Particle")
 
-#if os(OSX)
+#if os(macOS)
 		let panGesture = NSPanGestureRecognizer(target: self, action: #selector(DrawViewController.panGesture(_:)))
 		self.drawView.addGestureRecognizer(panGesture)
 
@@ -116,7 +116,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 	// MARK: -
 
 	func setupMetal() -> Bool {
-#if os(OSX)
+#if os(macOS)
 		assert(self.isViewLoaded)
 #else
 		assert(self.isViewLoaded)
@@ -271,7 +271,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 //		let locationPt = gesture.locationInView(self.drawView)
 //		let scenePt = self.locationToScene(locationPt)
 
-//		#if os(OSX)
+//		#if os(macOS)
 //		let strokeVertex = StrokeVertex(x: scenePt.x, y: scenePt.y, z: 0, force: 0, altitudeAngle: 0, azimuthAngle: 0, velocity: 0, angle: 0)
 //		#elseif os(iOS)
 //		let strokeVertex = StrokeVertex(x: scenePt.x, y: scenePt.y, z: 0, force: 0, altitudeAngle: 0, azimuthAngle: 0, velocity: 0, angle: 0)
@@ -306,7 +306,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 		return CGPoint(x: self.drawView.bounds.midX, y: self.drawView.bounds.midY)
 	}
 
-#if os(OSX)
+#if os(macOS)
 	func magnificationGesture(_ gesture: NSMagnificationGestureRecognizer) {
 
 		let magnification = gesture.magnification
@@ -354,7 +354,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 	}
 #endif
 
-#if os(OSX)
+#if os(macOS)
 	func gestureRecognizer(_ gestureRecognizer: NSGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: NSGestureRecognizer) -> Bool {
 		if let gestureRecognizer1 = gestureRecognizer as? NSClickGestureRecognizer,
 		   let gestureRecognizer2 = otherGestureRecognizer as? NSClickGestureRecognizer
@@ -366,7 +366,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 	}
 #endif
 	
-#if os(OSX)
+#if os(macOS)
 	func singleClickGesture(_ gesture: NSClickGestureRecognizer) {
 		let locationPt = gesture.location(in: self.drawView)
 		switch gesture.state {
@@ -394,7 +394,7 @@ class DrawViewController: XViewController, MTKViewDelegate, XGestureRecognizerDe
 	}
 #endif
 
-#if os(OSX)
+#if os(macOS)
 	func doubleClickGesture(_ gesture: NSClickGestureRecognizer) {
 		if gesture.state == .ended {
 			self.transform = self.transformToFit

@@ -11,11 +11,11 @@ import MetalKit
 import CoreGraphics
 import ImageIO
 
-#if os(OSX)
+#if os(macOS)
 extension NSImage {
 
 	// somehow OSX does not provide CGImage property
-	var CGImage: CGImage? {
+	var cgImage: CGImage? {
 		if let data = self.tiffRepresentation,
 		   let imageSource = CGImageSourceCreateWithData(data as CFData, nil) {
 			if CGImageSourceGetCount(imageSource) > 0 {
